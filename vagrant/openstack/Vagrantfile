@@ -1,0 +1,55 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  config.vm.define :cloud do |c|
+    c.vm.customize ["modifyvm", :id, "--memory", "1024"]
+    c.vm.customize ["modifyvm", :id, '--nictype2', 'Am79C973']
+    c.vm.customize ["modifyvm", :id, '--nicpromisc2', 'allow-all']
+    c.vm.customize ["modifyvm", :id, '--nictype3', 'Am79C973']
+    c.vm.customize ["modifyvm", :id, '--nicpromisc3', 'allow-all']
+    c.vm.host_name = 'cloud'
+    c.vm.box = "precise64"
+    # config.vm.boot_mode = :gui
+  
+    c.vm.network :hostonly, '10.0.0.11', :adapter => 2
+    c.vm.network :hostonly, '10.0.1.11', :adapter => 3
+  
+    config.vm.forward_port 80, 8080
+  
+    c.vm.provision :shell, :path => '/home/jtopjian/vms/scripts/openstack.sh', :args => 'cloud'
+  end
+
+  config.vm.define :c01 do |c|
+    c.vm.customize ["modifyvm", :id, "--memory", "1024"]
+    c.vm.customize ["modifyvm", :id, '--nictype2', 'Am79C973']
+    c.vm.customize ["modifyvm", :id, '--nicpromisc2', 'allow-all']
+    c.vm.customize ["modifyvm", :id, '--nictype3', 'Am79C973']
+    c.vm.customize ["modifyvm", :id, '--nicpromisc3', 'allow-all']
+    c.vm.host_name = 'c01'
+    c.vm.box = "precise64"
+    # config.vm.boot_mode = :gui
+  
+    c.vm.network :hostonly, '10.0.0.21', :adapter => 2
+    c.vm.network :hostonly, '10.0.1.21', :adapter => 3
+  
+  
+    c.vm.provision :shell, :path => '/home/jtopjian/vms/scripts/openstack.sh', :args => 'c01'
+  end
+
+  config.vm.define :c02 do |c|
+    c.vm.customize ["modifyvm", :id, "--memory", "1024"]
+    c.vm.customize ["modifyvm", :id, '--nictype2', 'Am79C973']
+    c.vm.customize ["modifyvm", :id, '--nicpromisc2', 'allow-all']
+    c.vm.customize ["modifyvm", :id, '--nictype3', 'Am79C973']
+    c.vm.customize ["modifyvm", :id, '--nicpromisc3', 'allow-all']
+    c.vm.host_name = 'c02'
+    c.vm.box = "precise64"
+    # config.vm.boot_mode = :gui
+  
+    c.vm.network :hostonly, '10.0.0.22', :adapter => 2
+    c.vm.network :hostonly, '10.0.1.22', :adapter => 3
+  
+    c.vm.provision :shell, :path => '/home/jtopjian/vms/scripts/openstack.sh', :args => 'c02' 
+  end
+end

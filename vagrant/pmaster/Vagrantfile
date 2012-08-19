@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant::Config.run do |config|
+  config.vm.customize ["modifyvm", :id, "--memory", "1024"]
+  config.vm.customize ["modifyvm", :id, '--nictype2', 'Am79C973']
+  config.vm.customize ["modifyvm", :id, '--nicpromisc2', 'allow-all']
+  config.vm.customize ["modifyvm", :id, '--nictype3', 'Am79C973']
+  config.vm.customize ["modifyvm", :id, '--nicpromisc3', 'allow-all']
+  config.vm.host_name = 'puppet'
+  config.vm.box = "precise64"
+  # config.vm.boot_mode = :gui
+
+  config.vm.network :hostonly, '10.0.0.10', :adapter => 2
+  config.vm.network :hostonly, '10.0.1.10', :adapter => 3
+  config.vm.network :bridged, :adapter => 4, :bridge => 'wlan0'
+
+  # config.vm.forward_port 80, 8080
+
+  # config.vm.provision :puppet do |puppet|
+  #   puppet.manifests_path = "manifests"
+  #   puppet.manifest_file  = "base.pp"
+  # end
+
+  config.vm.provision :shell, :path => '/home/jtopjian/vms/scripts/pmaster.sh'
+end
